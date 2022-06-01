@@ -435,7 +435,7 @@ public class main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jToggleButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton9ActionPerformed
-        jLabel1.setText("Lain-lain");        // TODO add your handling code here:
+        jLabel1.setText("Lain-lain");
     }//GEN-LAST:event_jToggleButton9ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
