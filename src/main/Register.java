@@ -4,6 +4,14 @@
  */
 package main;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author farhan
@@ -14,7 +22,20 @@ public class Register extends javax.swing.JFrame {
      * Creates new form Register
      */
     public Register () {
-        initComponents ();
+        initComponents();
+        Connect();
+    }
+    
+    Connection con;
+    PreparedStatement pst;
+    
+    public void Connect() {
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pengingat_tugas", "root", "");
+            System.out.println("Berhasil");
+        } catch (SQLException e) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
@@ -178,8 +199,28 @@ public class Register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.setVisible(false);
-        new login().setVisible(true);
+        try {
+            String npm = jTextField1_npm.getText();
+            String nama = jTextField1_nama.getText();
+            String email = jTextField1_email.getText();
+            String password = String.valueOf(jPasswordField1_password.getPassword());
+            String ulangi = String.valueOf(jPasswordField1_ulangiPassword.getPassword());
+            
+            pst = con.prepareStatement("INSERT INTO `mahasiswa` (`npm`, `nama`, `email`, `password`) VALUES (?,?,?,?)");
+            pst.setString(1, npm);
+            pst.setString(2, nama);
+            pst.setString(3, email);
+            pst.setString(4, password);
+            
+            int k = pst.executeUpdate();
+            if (k==1) {
+                JOptionPane.showMessageDialog(null, "Akun Anda berhasil dibuat!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Akun Anda gagal dibuat!");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, e);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
