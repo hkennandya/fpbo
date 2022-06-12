@@ -4,6 +4,15 @@
  */
 package main;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Hafizh
@@ -15,6 +24,20 @@ public class login extends javax.swing.JFrame {
      */
     public login() {
         initComponents();
+        Connect();
+    }
+    
+    Connection con;
+    PreparedStatement pst;
+    ResultSet rs;
+    
+    public void Connect() {
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pengingat_tugas", "root", "");
+            System.out.println("Berhasil");
+        } catch (SQLException e) {
+            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
@@ -28,10 +51,10 @@ public class login extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jTextField1_username = new javax.swing.JTextField();
-        jPasswordField1_password = new javax.swing.JPasswordField();
+        jTextField_npm = new javax.swing.JTextField();
+        jPasswordField_password = new javax.swing.JPasswordField();
         jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
+        jButton_login = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -42,25 +65,35 @@ public class login extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField1_username.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        jTextField1_username.setForeground(new java.awt.Color(88, 67, 190));
-        jTextField1_username.setText("Username");
+        jTextField_npm.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        jTextField_npm.setForeground(new java.awt.Color(88, 67, 190));
+        jTextField_npm.setText("Username");
+        jTextField_npm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField_npmActionPerformed(evt);
+            }
+        });
 
-        jPasswordField1_password.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        jPasswordField1_password.setForeground(new java.awt.Color(88, 67, 190));
-        jPasswordField1_password.setText("Password");
+        jPasswordField_password.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        jPasswordField_password.setForeground(new java.awt.Color(88, 67, 190));
+        jPasswordField_password.setText("Password");
 
         jCheckBox1.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         jCheckBox1.setForeground(new java.awt.Color(88, 67, 190));
         jCheckBox1.setText("Remember me");
 
-        jButton1.setBackground(new java.awt.Color(88, 67, 190));
-        jButton1.setFont(new java.awt.Font("Montserrat SemiBold", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Login");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton_login.setBackground(new java.awt.Color(88, 67, 190));
+        jButton_login.setFont(new java.awt.Font("Montserrat SemiBold", 0, 18)); // NOI18N
+        jButton_login.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_login.setText("Login");
+        jButton_login.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_loginMouseClicked(evt);
+            }
+        });
+        jButton_login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton_loginActionPerformed(evt);
             }
         });
 
@@ -87,11 +120,11 @@ public class login extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1_username, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField_npm, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jPasswordField1_password, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPasswordField_password, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_login, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addContainerGap())
         );
@@ -101,13 +134,13 @@ public class login extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
                 .addGap(24, 24, 24)
-                .addComponent(jTextField1_username, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addComponent(jTextField_npm, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jPasswordField1_password, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addComponent(jPasswordField_password, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addComponent(jButton_login, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2))
         );
@@ -144,10 +177,31 @@ public class login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.setVisible(false);
-        new main().setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButton_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_loginActionPerformed
+        try {
+            String npm = jTextField_npm.getText();
+            String password = String.valueOf(jPasswordField_password.getPassword());
+            
+            pst = con.prepareStatement("SELECT * FROM mahasiswa where npm = ? AND password = ?");
+            pst.setString(1, npm);
+            pst.setString(2, password);
+            
+            rs = pst.executeQuery();
+            
+            if (rs.next()==true) {
+                main dashboard = new main();
+                dashboard.setVisible(true);
+                dashboard.pack();
+                dashboard.setLocationRelativeTo(null);
+                dashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "NPM/Password yang Anda masukkan salah!");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }//GEN-LAST:event_jButton_loginActionPerformed
 
     private void jLabel2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel2KeyPressed
         // 
@@ -157,6 +211,14 @@ public class login extends javax.swing.JFrame {
         this.setVisible(false);
         new Register().setVisible(true);
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jButton_loginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_loginMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_loginMouseClicked
+
+    private void jTextField_npmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_npmActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField_npmActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,13 +233,13 @@ public class login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton_login;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField jPasswordField1_password;
-    private javax.swing.JTextField jTextField1_username;
+    private javax.swing.JPasswordField jPasswordField_password;
+    private javax.swing.JTextField jTextField_npm;
     // End of variables declaration//GEN-END:variables
 }

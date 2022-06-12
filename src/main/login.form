@@ -77,11 +77,11 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextField1_username" alignment="2" min="-2" pref="276" max="-2" attributes="0"/>
+                          <Component id="jTextField_npm" alignment="2" min="-2" pref="276" max="-2" attributes="0"/>
                           <Component id="jLabel1" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="jPasswordField1_password" alignment="2" min="-2" pref="276" max="-2" attributes="0"/>
+                          <Component id="jPasswordField_password" alignment="2" min="-2" pref="276" max="-2" attributes="0"/>
                           <Component id="jCheckBox1" alignment="2" min="-2" pref="276" max="-2" attributes="0"/>
-                          <Component id="jButton1" alignment="2" min="-2" pref="275" max="-2" attributes="0"/>
+                          <Component id="jButton_login" alignment="2" min="-2" pref="275" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -94,13 +94,13 @@
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Component id="jLabel1" pref="64" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                      <Component id="jTextField1_username" pref="36" max="32767" attributes="0"/>
+                      <Component id="jTextField_npm" pref="36" max="32767" attributes="0"/>
                       <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                      <Component id="jPasswordField1_password" pref="36" max="32767" attributes="0"/>
+                      <Component id="jPasswordField_password" pref="36" max="32767" attributes="0"/>
                       <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                       <Component id="jCheckBox1" pref="39" max="32767" attributes="0"/>
                       <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton1" pref="36" max="32767" attributes="0"/>
+                      <Component id="jButton_login" pref="36" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -108,7 +108,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="jTextField1_username">
+            <Component class="javax.swing.JTextField" name="jTextField_npm">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Montserrat" size="12" style="0"/>
@@ -118,8 +118,11 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Username"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField_npmActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="jPasswordField1_password">
+            <Component class="javax.swing.JPasswordField" name="jPasswordField_password">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Montserrat" size="12" style="0"/>
@@ -141,7 +144,7 @@
                 <Property name="text" type="java.lang.String" value="Remember me"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton1">
+            <Component class="javax.swing.JButton" name="jButton_login">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="be" green="43" red="58" type="rgb"/>
@@ -155,7 +158,8 @@
                 <Property name="text" type="java.lang.String" value="Login"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton_loginMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_loginActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
