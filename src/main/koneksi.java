@@ -14,7 +14,7 @@ public class koneksi {
     public static void main(String[] args) {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pengingat_tugas", "root", "");
-        System.out.println("Berhasil");
+            System.out.println("Berhasil");
         } catch (SQLException e) {
             System.out.println("Gagal");
         }

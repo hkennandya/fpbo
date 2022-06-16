@@ -4,19 +4,78 @@
  */
 package main;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Hafizh
  */
 public class main extends javax.swing.JFrame {
+    
+    private Connection con;
+    private Statement stat;
+    private ResultSet res;
 
     /**
      * Creates new form main
      */
     public main() {
         initComponents();
+        koneksi();
+        tabel();
         this.setExtendedState(MAXIMIZED_BOTH);        
+    }
+    
+    private void koneksi(){
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pengingat_tugas", "root", "");
+            System.out.println("Berhasil");
+            stat=con.createStatement();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    /*
+    * localhost adalah host pada database kalian, bisa juga menggunakan alamat ip. misal 127.0.0.1
+    * Data1 adalah nama pada database kalian
+    * root adalah nama user database kalian
+    * dan yg terakhir adalah password user database kalaian(di kosongkan jika tidak ada passwordnya)
+    */
+    
+    private void tabel(){
+        DefaultTableModel tb= new DefaultTableModel();
+        // Memberi nama pada setiap kolom tabel
+        tb.addColumn("Title");
+        tb.addColumn("Deadline");
+        tb.addColumn("Status");
+        jTable1.setModel(tb);
+        
+        try{
+            // Mengambil data dari database
+            res = stat.executeQuery("SELECT * FROM `tugas`");
+
+            while (res.next())
+            {
+                // Mengambil data dari database berdasarkan nama kolom pada tabel
+                // Lalu di tampilkan ke dalam JTable
+                System.out.println("Berhasil");
+                tb.addRow(new Object[]{
+                    res.getString("nama_tugas"),
+                    res.getString("deadline"),
+                    res.getString("status")
+                });
+            }
+        }catch (Exception e){
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
