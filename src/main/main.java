@@ -31,6 +31,7 @@ public class main extends javax.swing.JFrame {
         initComponents();
         koneksi();
         tabel();
+        tabelSelesai();
         this.setExtendedState(MAXIMIZED_BOTH);        
     }
     
@@ -61,6 +62,34 @@ public class main extends javax.swing.JFrame {
         try{
             // Mengambil data dari database
             res = stat.executeQuery("SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3");
+
+            while (res.next())
+            {
+                // Mengambil data dari database berdasarkan nama kolom pada tabel
+                // Lalu di tampilkan ke dalam JTable
+                System.out.println("Berhasil");
+                tb.addRow(new Object[]{
+                    res.getString("nama_tugas"),
+                    res.getString("deadline"),
+                    res.getString("nama_status")
+                });
+            }
+        }catch (Exception e){
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    private void tabelSelesai(){
+        DefaultTableModel tb= new DefaultTableModel();
+        // Memberi nama pada setiap kolom tabel
+        tb.addColumn("Title");
+        tb.addColumn("Deadline");
+        tb.addColumn("Status");
+        jTable2.setModel(tb);
+        
+        try{
+            // Mengambil data dari database
+            res = stat.executeQuery("SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3");
 
             while (res.next())
             {

@@ -4,17 +4,59 @@
  */
 package main;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.DefaultComboBoxModel;
 /**
  *
  * @author Hafizh
  */
 public class buatTask extends javax.swing.JFrame {
 
+    private ResultSet res;
+    private Statement stat;
+    private Connection con;
+    
     /**
      * Creates new form CreateTask
      */
     public buatTask() {
         initComponents();
+        koneksi();
+        status();
+    }
+    
+    private void koneksi(){
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pengingat_tugas", "root", "");
+            stat=con.createStatement();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    private void status(){ 
+        DefaultComboBoxModel cb = new DefaultComboBoxModel();
+        jComboBox1.setModel(cb);
+        try{
+            // Mengambil data dari database
+            res = stat.executeQuery("SELECT * FROM `status`");
+
+            while (res.next())
+            {
+                // Mengambil data dari database berdasarkan nama kolom pada tabel
+                // Lalu di tampilkan ke dalam JComboBox
+                jComboBox1.addItem(res.getString("nama_status"));
+            }
+        }catch (Exception e){
+            Logger.getLogger(buatTask.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
