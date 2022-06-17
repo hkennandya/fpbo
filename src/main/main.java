@@ -30,15 +30,17 @@ public class main extends javax.swing.JFrame {
     public main() {
         initComponents();
         koneksi();
-        tabel();
-        tabelSelesai();
+        
+        String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 1";
+        tabel(sql);
+        String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 1";
+        tabelSelesai(sqlSelesai);
         this.setExtendedState(MAXIMIZED_BOTH);        
     }
     
     private void koneksi(){
         try {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pengingat_tugas", "root", "");
-            System.out.println("Berhasil");
             stat=con.createStatement();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -51,7 +53,7 @@ public class main extends javax.swing.JFrame {
     * dan yg terakhir adalah password user database kalaian(di kosongkan jika tidak ada passwordnya)
     */
     
-    private void tabel(){
+    private void tabel(String sql){
         DefaultTableModel tb= new DefaultTableModel();
         // Memberi nama pada setiap kolom tabel
         tb.addColumn("Title");
@@ -61,13 +63,12 @@ public class main extends javax.swing.JFrame {
         
         try{
             // Mengambil data dari database
-            res = stat.executeQuery("SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3");
+            res = stat.executeQuery(sql);
 
             while (res.next())
             {
                 // Mengambil data dari database berdasarkan nama kolom pada tabel
                 // Lalu di tampilkan ke dalam JTable
-                System.out.println("Berhasil");
                 tb.addRow(new Object[]{
                     res.getString("nama_tugas"),
                     res.getString("deadline"),
@@ -79,7 +80,7 @@ public class main extends javax.swing.JFrame {
         }
     }
     
-    private void tabelSelesai(){
+    private void tabelSelesai(String sql){
         DefaultTableModel tb= new DefaultTableModel();
         // Memberi nama pada setiap kolom tabel
         tb.addColumn("Title");
@@ -89,13 +90,12 @@ public class main extends javax.swing.JFrame {
         
         try{
             // Mengambil data dari database
-            res = stat.executeQuery("SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3");
+            res = stat.executeQuery(sql);
 
             while (res.next())
             {
                 // Mengambil data dari database berdasarkan nama kolom pada tabel
                 // Lalu di tampilkan ke dalam JTable
-                System.out.println("Berhasil");
                 tb.addRow(new Object[]{
                     res.getString("nama_tugas"),
                     res.getString("deadline"),
@@ -466,14 +466,26 @@ public class main extends javax.swing.JFrame {
 
     private void jToggleButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton7ActionPerformed
         jLabel1.setText("Organisasi");
+        String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 2";
+        tabel(sql);
+        String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 2";
+        tabelSelesai(sqlSelesai);
     }//GEN-LAST:event_jToggleButton7ActionPerformed
 
     private void jToggleButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton8ActionPerformed
-        jLabel1.setText("Pribadi");        // TODO add your handling code here:
+        jLabel1.setText("Pribadi");
+        String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 3";
+        tabel(sql);
+        String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 3";
+        tabelSelesai(sqlSelesai);
     }//GEN-LAST:event_jToggleButton8ActionPerformed
 
     private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
-        jLabel1.setText("Perkuliahan");        // TODO add your handling code here:
+        jLabel1.setText("Perkuliahan");
+        String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 1";
+        tabel(sql);
+        String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 1";
+        tabelSelesai(sqlSelesai);
     }//GEN-LAST:event_jToggleButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed

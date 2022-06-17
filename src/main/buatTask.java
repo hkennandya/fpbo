@@ -6,6 +6,7 @@ package main;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
+import java.text.SimpleDateFormat;
 /**
  *
  * @author Hafizh
@@ -22,6 +24,7 @@ public class buatTask extends javax.swing.JFrame {
     private ResultSet res;
     private Statement stat;
     private Connection con;
+    PreparedStatement pst;
     
     /**
      * Creates new form CreateTask
@@ -69,8 +72,8 @@ public class buatTask extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jTextField_nama = new javax.swing.JTextField();
+        jDateChooser_deadline = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -81,15 +84,15 @@ public class buatTask extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(235, 231, 255));
 
-        jTextField1.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTextField_nama.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        jTextField_nama.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextField_namaActionPerformed(evt);
             }
         });
 
-        jDateChooser2.setDateFormatString("dd MMM, yyyy");
-        jDateChooser2.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        jDateChooser_deadline.setDateFormatString("yyyy-MM-dd");
+        jDateChooser_deadline.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         jLabel1.setText("Nama Tugas");
@@ -139,12 +142,12 @@ public class buatTask extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField_nama, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                                 .addGap(12, 12, 12)
                                 .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooser_deadline, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,11 +161,11 @@ public class buatTask extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField_nama, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jDateChooser_deadline, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
@@ -172,7 +175,7 @@ public class buatTask extends javax.swing.JFrame {
                 .addGap(18, 18, 18))
         );
 
-        jDateChooser2.getAccessibleContext().setAccessibleName("\"\"");
+        jDateChooser_deadline.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -190,12 +193,44 @@ public class buatTask extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.setVisible(false);
+        try {
+            String nama = jTextField_nama.getText();
+            String tipe = "1";
+            String status = jComboBox1.getSelectedItem().toString();
+            if(status.equals("Belum dikerjakan")) {
+                status = "1";
+            } else if(status.equals("Belum selesai")) {
+                status = "2";
+            } else if(status.equals("Selesai")) {
+                status = "3";
+            } else {
+                status = "0";
+            }
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String deadline = sdf.format(jDateChooser_deadline.getDate());
+            
+            pst = con.prepareStatement("INSERT INTO `tugas` (`nama_tugas`, `tipe`, `status`, `deadline`) VALUES (?,?,?,?)");
+            pst.setString(1, nama);
+            pst.setString(2, tipe);
+            pst.setString(3, status);
+            pst.setString(4, deadline);
+            
+            int k = pst.executeUpdate();
+            if (k==1) {
+                JOptionPane.showMessageDialog(null, "Data tugas berhasil dibuat!");
+                this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Data tugas gagal dibuat!");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(buatTask.class.getName()).log(Level.SEVERE, null, e);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextField_namaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_namaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextField_namaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
@@ -221,10 +256,10 @@ public class buatTask extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateChooser_deadline;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField_nama;
     // End of variables declaration//GEN-END:variables
 }
