@@ -56,10 +56,14 @@ public class main extends javax.swing.JFrame {
     private void tabel(String sql){
         DefaultTableModel tb= new DefaultTableModel();
         // Memberi nama pada setiap kolom tabel
+        tb.addColumn("id");
         tb.addColumn("Title");
         tb.addColumn("Deadline");
         tb.addColumn("Status");
         jTable1.setModel(tb);
+        jTable1.getColumn("id").setMinWidth(0);
+        jTable1.getColumn("id").setMaxWidth(0);
+        jTable1.getColumn("id").setWidth(0);
         
         try{
             // Mengambil data dari database
@@ -70,6 +74,7 @@ public class main extends javax.swing.JFrame {
                 // Mengambil data dari database berdasarkan nama kolom pada tabel
                 // Lalu di tampilkan ke dalam JTable
                 tb.addRow(new Object[]{
+                    res.getString("id_tugas"),
                     res.getString("nama_tugas"),
                     res.getString("deadline"),
                     res.getString("nama_status")
@@ -505,7 +510,18 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        new ubahTask().setVisible(true);   
+        int baris = jTable1.getSelectedRow();
+        String deadline = jTable1.getValueAt(baris, 2).toString();
+        ubahTask ubah = new ubahTask();
+        ubah.setNamaTugas(jTable1.getValueAt(baris, 1).toString());
+        try {
+            ubah.setDeadline(deadline);
+        } catch (Exception e) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, e);
+        }
+        ubah.setStatus(jTable1.getValueAt(baris, 3).toString());
+        
+        ubah.setVisible(true);
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked

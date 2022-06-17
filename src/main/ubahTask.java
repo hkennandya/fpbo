@@ -5,13 +5,27 @@
 package main;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Hafizh
  */
 public class ubahTask extends javax.swing.JFrame {
 
+    private Statement stat;
+    private ResultSet res;
+    private Connection con;
+    
     /**
      * Creates new form CreateTask
      */
@@ -19,6 +33,54 @@ public class ubahTask extends javax.swing.JFrame {
         initComponents();
         Date d = new Date();
         jDateChooser2.setDate(d);
+        koneksi();
+        status();
+    }
+    
+    private void koneksi(){
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pengingat_tugas", "root", "");
+            stat=con.createStatement();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    private void status(){ 
+        DefaultComboBoxModel cb = new DefaultComboBoxModel();
+        jComboBox1.setModel(cb);
+        try{
+            // Mengambil data dari database
+            res = stat.executeQuery("SELECT * FROM `status`");
+
+            while (res.next())
+            {
+                // Mengambil data dari database berdasarkan nama kolom pada tabel
+                // Lalu di tampilkan ke dalam JComboBox
+                jComboBox1.addItem(res.getString("nama_status"));
+            }
+        }catch (Exception e){
+            Logger.getLogger(buatTask.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void setNamaTugas(String nama) {
+        jTextField_namaTugas.setText(nama);
+    }
+    
+    public void setDeadline(String deadline) throws ParseException {
+        String dl = deadline;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse(dl);
+        jDateChooser2.setDate(date);
+    }
+    
+    public void setStatus(String status) {
+        for (int i=0; i < 3; i++) {
+            if (jComboBox1.getItemAt(i).equals(status)) {
+                jComboBox1.setSelectedIndex(i);
+            }
+        }
     }
 
     /**
@@ -32,7 +94,7 @@ public class ubahTask extends javax.swing.JFrame {
 
         jProgressBar1 = new javax.swing.JProgressBar();
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextField_namaTugas = new javax.swing.JTextField();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -45,11 +107,11 @@ public class ubahTask extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(235, 231, 255));
 
-        jTextField1.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        jTextField1.setText("Praktikum 2 Pemograman Web");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTextField_namaTugas.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        jTextField_namaTugas.setText("Praktikum 2 Pemograman Web");
+        jTextField_namaTugas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextField_namaTugasActionPerformed(evt);
             }
         });
 
@@ -113,7 +175,7 @@ public class ubahTask extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                            .addComponent(jTextField_namaTugas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
                             .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +196,7 @@ public class ubahTask extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField_namaTugas, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -170,9 +232,9 @@ public class ubahTask extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextField_namaTugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_namaTugasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextField_namaTugasActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
@@ -208,6 +270,6 @@ public class ubahTask extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField_namaTugas;
     // End of variables declaration//GEN-END:variables
 }
