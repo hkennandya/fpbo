@@ -130,6 +130,24 @@ public class ubahTask extends javax.swing.JFrame {
             Logger.getLogger(ubahTask.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    
+    private void DeleteData() {
+        String sql = "DELETE FROM tugas WHERE id_tugas = '" + id_tugas + "'";
+        
+        try {
+            stat = con.createStatement();
+            int k = stat.executeUpdate(sql);
+            
+            if (k==1) {
+                JOptionPane.showMessageDialog(null, "Data tugas berhasil dihapus!");
+                this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Data tugas gagal dihapus!");
+            }
+        } catch (Exception e) {
+            Logger.getLogger(ubahTask.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -290,7 +308,8 @@ public class ubahTask extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        DeleteData();
+        this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
