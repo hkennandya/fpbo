@@ -60,7 +60,7 @@ public class main extends javax.swing.JFrame {
         
         try{
             // Mengambil data dari database
-            res = stat.executeQuery("SELECT * FROM `tugas`");
+            res = stat.executeQuery("SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3");
 
             while (res.next())
             {
@@ -70,7 +70,7 @@ public class main extends javax.swing.JFrame {
                 tb.addRow(new Object[]{
                     res.getString("nama_tugas"),
                     res.getString("deadline"),
-                    res.getString("status")
+                    res.getString("nama_status")
                 });
             }
         }catch (Exception e){
