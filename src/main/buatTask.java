@@ -25,6 +25,7 @@ public class buatTask extends javax.swing.JFrame {
     private Statement stat;
     private Connection con;
     PreparedStatement pst;
+    private String tipe;
     
     /**
      * Creates new form CreateTask
@@ -59,6 +60,16 @@ public class buatTask extends javax.swing.JFrame {
             }
         }catch (Exception e){
             Logger.getLogger(buatTask.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void setTipe(String nama_tipe) {
+        if (nama_tipe.equals("Perkuliahan")) {
+            tipe = "1";
+        } else if (nama_tipe.equals("Organisasi")) {
+            tipe = "2";
+        } else if (nama_tipe.equals("Pribadi")) {
+            tipe = "3";
         }
     }
 
@@ -195,7 +206,6 @@ public class buatTask extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             String nama = jTextField_nama.getText();
-            String tipe = "1";
             String status = jComboBox1.getSelectedItem().toString();
             if(status.equals("Belum dikerjakan")) {
                 status = "1";

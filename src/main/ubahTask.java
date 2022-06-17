@@ -25,6 +25,7 @@ public class ubahTask extends javax.swing.JFrame {
     private Statement stat;
     private ResultSet res;
     private Connection con;
+    private String id_tugas;
     
     /**
      * Creates new form CreateTask
@@ -64,6 +65,9 @@ public class ubahTask extends javax.swing.JFrame {
         }
     }
     
+    public void setIdTugas(String id) {
+        id_tugas = id;
+    }
     public void setNamaTugas(String nama) {
         jTextField_namaTugas.setText(nama);
     }
@@ -81,6 +85,10 @@ public class ubahTask extends javax.swing.JFrame {
                 jComboBox1.setSelectedIndex(i);
             }
         }
+    }
+    
+    public void UpdateData() {
+        String nama_tugas = jTextField_namaTugas.getText();
     }
 
     /**
@@ -229,6 +237,7 @@ public class ubahTask extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 

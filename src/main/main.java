@@ -471,6 +471,7 @@ public class main extends javax.swing.JFrame {
 
     private void jToggleButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton7ActionPerformed
         jLabel1.setText("Organisasi");
+        
         String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 2";
         tabel(sql);
         String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 2";
@@ -479,6 +480,7 @@ public class main extends javax.swing.JFrame {
 
     private void jToggleButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton8ActionPerformed
         jLabel1.setText("Pribadi");
+        
         String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 3";
         tabel(sql);
         String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 3";
@@ -487,6 +489,7 @@ public class main extends javax.swing.JFrame {
 
     private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
         jLabel1.setText("Perkuliahan");
+        
         String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 1";
         tabel(sql);
         String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 1";
@@ -506,13 +509,18 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new buatTask().setVisible(true);        // TODO add your handling code here:
+        String nama_tipe = jLabel1.getText();
+        buatTask bt = new buatTask();
+        bt.setTipe(nama_tipe);
+        bt.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int baris = jTable1.getSelectedRow();
+        String id = jTable1.getValueAt(baris, 0).toString();
         String deadline = jTable1.getValueAt(baris, 2).toString();
         ubahTask ubah = new ubahTask();
+        ubah.setIdTugas(id);
         ubah.setNamaTugas(jTable1.getValueAt(baris, 1).toString());
         try {
             ubah.setDeadline(deadline);
