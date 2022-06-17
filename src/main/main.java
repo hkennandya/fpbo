@@ -528,6 +528,9 @@ public class main extends javax.swing.JFrame {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, e);
         }
         ubah.setStatus(jTable1.getValueAt(baris, 3).toString());
+        // set tipe
+        String nama_tipe = jLabel1.getText();
+        ubah.setTipe(nama_tipe);
         
         ubah.setVisible(true);
     }//GEN-LAST:event_jTable1MouseClicked

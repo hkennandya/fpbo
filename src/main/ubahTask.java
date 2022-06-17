@@ -26,6 +26,7 @@ public class ubahTask extends javax.swing.JFrame {
     private ResultSet res;
     private Connection con;
     private String id_tugas;
+    private String tipe;
     
     /**
      * Creates new form CreateTask
@@ -87,8 +88,47 @@ public class ubahTask extends javax.swing.JFrame {
         }
     }
     
+    public void setTipe(String nama_tipe) {
+        if (nama_tipe.equals("Perkuliahan")) {
+            tipe = "1";
+        } else if (nama_tipe.equals("Organisasi")) {
+            tipe = "2";
+        } else if (nama_tipe.equals("Pribadi")) {
+            tipe = "3";
+        }
+    }
+    
     public void UpdateData() {
         String nama_tugas = jTextField_namaTugas.getText();
+        // set id status
+        String status = jComboBox1.getSelectedItem().toString();
+        if(status.equals("Belum dikerjakan")) {
+            status = "1";
+        } else if(status.equals("Belum selesai")) {
+            status = "2";
+        } else if(status.equals("Selesai")) {
+            status = "3";
+        } else {
+            status = "0";
+        }
+        // ambil tanggal
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String deadline = sdf.format(jDateChooser2.getDate());
+        
+        String sql = "UPDATE tugas SET nama_tugas = '" + nama_tugas + "', tipe = '" + tipe + "', status = '" + status + "', deadline = '" + deadline + "' WHERE id_tugas = '" + id_tugas + "'";
+        try {
+            stat = con.createStatement();
+            int k = stat.executeUpdate(sql);
+            
+            if (k==1) {
+                JOptionPane.showMessageDialog(null, "Data tugas berhasil diubah!");
+                this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Data tugas gagal diubah!");
+            }
+        } catch (Exception e) {
+            Logger.getLogger(ubahTask.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
@@ -237,7 +277,7 @@ public class ubahTask extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+        UpdateData();
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
