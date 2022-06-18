@@ -53,6 +53,14 @@ public class main extends javax.swing.JFrame {
     * dan yg terakhir adalah password user database kalaian(di kosongkan jika tidak ada passwordnya)
     */
     
+    public void setNama(String nama) {
+        jLabel4.setText(nama);
+    }
+    
+    public void setEmail(String email) {
+        jLabel5.setText(email);
+    }
+    
     private void tabel(String sql){
         DefaultTableModel tb= new DefaultTableModel();
         // Memberi nama pada setiap kolom tabel

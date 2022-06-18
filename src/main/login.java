@@ -190,6 +190,8 @@ public class login extends javax.swing.JFrame {
             
             if (rs.next()==true) {
                 main dashboard = new main();
+                dashboard.setNama(rs.getString("nama"));
+                dashboard.setEmail(rs.getString("email"));
                 dashboard.setVisible(true);
                 dashboard.pack();
                 dashboard.setLocationRelativeTo(null);
