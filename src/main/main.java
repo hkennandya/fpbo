@@ -23,6 +23,10 @@ public class main extends javax.swing.JFrame {
     private Connection con;
     private Statement stat;
     private ResultSet res;
+    
+    public String order = "ORDER BY deadline ASC";
+    public String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 1";
+    public String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 1";
 
     /**
      * Creates new form main
@@ -30,11 +34,9 @@ public class main extends javax.swing.JFrame {
     public main() {
         initComponents();
         koneksi();
-        
-        String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 1";
-        tabel(sql);
-        String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 1";
-        tabelSelesai(sqlSelesai);
+
+        tabel(sql, order);
+        tabelSelesai(sqlSelesai, order);
         this.setExtendedState(MAXIMIZED_BOTH);        
     }
     
@@ -46,12 +48,6 @@ public class main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-    /*
-    * localhost adalah host pada database kalian, bisa juga menggunakan alamat ip. misal 127.0.0.1
-    * Data1 adalah nama pada database kalian
-    * root adalah nama user database kalian
-    * dan yg terakhir adalah password user database kalaian(di kosongkan jika tidak ada passwordnya)
-    */
     
     public void setNama(String nama) {
         jLabel4.setText(nama);
@@ -61,7 +57,27 @@ public class main extends javax.swing.JFrame {
         jLabel5.setText(email);
     }
     
-    private void tabel(String sql){
+    public void setOrder(String selectedItem) {
+        if (selectedItem.equals("Urutkan Jatuh Tempo Terdekat")) {
+            order = "ORDER BY deadline ASC";
+        } else if (selectedItem.equals("Urutkan Jatuh Tempo Terjauh")) {
+            order = "ORDER BY deadline DESC";
+        } else if (selectedItem.equals("Urutkan Terbaru Dibuat")) {
+            order = "ORDER BY id_tugas DESC";
+        } else if (selectedItem.equals("Urutkan Terlama Dibuat")) {
+            order = "ORDER BY id_tugas ASC";
+        }
+    }
+    
+    public void setSQL(String sql) {
+        this.sql = sql;
+    }
+    
+    public void setSQLSelesai(String sqlSelesai) {
+        this.sqlSelesai = sqlSelesai;
+    }
+    
+    private void tabel(String sql, String order){
         DefaultTableModel tb= new DefaultTableModel();
         // Memberi nama pada setiap kolom tabel
         tb.addColumn("id");
@@ -75,7 +91,7 @@ public class main extends javax.swing.JFrame {
         
         try{
             // Mengambil data dari database
-            res = stat.executeQuery(sql);
+            res = stat.executeQuery(sql + " " + order);
 
             while (res.next())
             {
@@ -93,7 +109,7 @@ public class main extends javax.swing.JFrame {
         }
     }
     
-    private void tabelSelesai(String sql){
+    private void tabelSelesai(String sql, String order){
         DefaultTableModel tb= new DefaultTableModel();
         // Memberi nama pada setiap kolom tabel
         tb.addColumn("Title");
@@ -103,7 +119,7 @@ public class main extends javax.swing.JFrame {
         
         try{
             // Mengambil data dari database
-            res = stat.executeQuery(sql);
+            res = stat.executeQuery(sql + " " + order);
 
             while (res.next())
             {
@@ -270,6 +286,11 @@ public class main extends javax.swing.JFrame {
         jComboBox1.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         jComboBox1.setForeground(new java.awt.Color(88, 67, 190));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Urutkan Jatuh Tempo Terdekat", "Urutkan Jatuh Tempo Terjauh", "Urutkan Terbaru Dibuat", "Urutkan Terlama Dibuat" }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -481,27 +502,33 @@ public class main extends javax.swing.JFrame {
         jLabel1.setText("Organisasi");
         
         String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 2";
-        tabel(sql);
+        this.setSQL(sql);
+        tabel(this.sql, order);
         String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 2";
-        tabelSelesai(sqlSelesai);
+        this.setSQLSelesai(sqlSelesai);
+        tabelSelesai(this.sqlSelesai, order);
     }//GEN-LAST:event_jToggleButton7ActionPerformed
 
     private void jToggleButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton8ActionPerformed
         jLabel1.setText("Pribadi");
         
         String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 3";
-        tabel(sql);
+        this.setSQL(sql);
+        tabel(this.sql, order);
         String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 3";
-        tabelSelesai(sqlSelesai);
+        this.setSQLSelesai(sqlSelesai);
+        tabelSelesai(this.sqlSelesai, order);
     }//GEN-LAST:event_jToggleButton8ActionPerformed
 
     private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
         jLabel1.setText("Perkuliahan");
         
         String sql = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status != 3 AND tipe = 1";
-        tabel(sql);
+        this.setSQL(sql);
+        tabel(this.sql, order);
         String sqlSelesai = "SELECT * FROM `tugas` JOIN status ON status.id_status = tugas.status WHERE status = 3 AND tipe = 1";
-        tabelSelesai(sqlSelesai);
+        this.setSQLSelesai(sqlSelesai);
+        tabelSelesai(this.sqlSelesai, order);
     }//GEN-LAST:event_jToggleButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -546,6 +573,13 @@ public class main extends javax.swing.JFrame {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         new ubahTask().setVisible(true);
     }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        String selectedItem = jComboBox1.getSelectedItem().toString();
+        setOrder(selectedItem);
+        tabel(sql, order);
+        tabelSelesai(sqlSelesai, order);
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     /**
      * @param args the command line arguments
